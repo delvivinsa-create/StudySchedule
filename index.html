@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySchedule - Atur Jadwalmu, Raih Prestasimu</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="splash-screen" class="splash">
+        <div class="splash-content">
+            <i class="fas fa-book-reader splash-icon"></i>
+            <h1>StudySchedule</h1>
+            <p>Atur Jadwalmu, Raih Prestasimu</p>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <div id="login-screen" class="login-container hidden">
+        <div class="login-card">
+            <i class="fas fa-user-graduate login-icon"></i>
+            <h2>Masuk ke StudySchedule</h2>
+            <p>Aplikasi simulasi lokal</p>
+            <form id="form-login">
+                <div class="form-group">
+                    <label>Nama Pengguna / Username</label>
+                    <input type="text" id="login-username" required placeholder="Masukkan nama kamu">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" required placeholder="Password bebas (Simulasi)">
+                </div>
+                <button type="submit" class="btn-primary w-100">Masuk</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-container" class="app-container hidden">
+        
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-book-reader"></i>
+                <span>StudySchedule</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-item active" data-target="beranda"><i class="fas fa-home"></i> <span>Beranda</span></a></li>
+                <li><a href="#" class="nav-item" data-target="jadwal-pelajaran"><i class="fas fa-calendar-alt"></i> <span>Jadwal Pelajaran</span></a></li>
+                <li><a href="#" class="nav-item" data-target="jadwal-belajar"><i class="fas fa-book"></i> <span>Jadwal Belajar</span></a></li>
+                <li><a href="#" class="nav-item" data-target="daftar-tugas"><i class="fas fa-tasks"></i> <span>Daftar Tugas</span></a></li>
+                <li><a href="#" class="nav-item" data-target="pengingat"><i class="fas fa-bell"></i> <span>Pengingat</span></a></li>
+                <li><a href="#" class="nav-item" data-target="peringkat"><i class="fas fa-trophy"></i> <span>Peringkat</span></a></li>
+                <li><a href="#" class="nav-item" data-target="profil"><i class="fas fa-user"></i> <span>Profil</span></a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            
+            <section id="beranda" class="page-section active">
+                <header class="header">
+                    <div>
+                        <h2 id="sapaan-user">Halo, Pelajar! 👋</h2>
+                        <p id="tanggal-sekarang" class="text-muted">Senin, 1 Januari 2026</p>
+                    </div>
+                    <div class="clock" id="jam-sekarang">00:00:00</div>
+                </header>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check text-blue"></i>
+                        <div class="stat-info">
+                            <h3 id="stat-jadwal-hari-ini">0</h3>
+                            <p>Jadwal Pelajaran Hari Ini</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-book-open text-purple"></i>
+                        <div class="stat-info">
+                            <h3 id="stat-belajar-hari-ini">0</h3>
+                            <p>Jadwal Belajar Hari Ini</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-exclamation-circle text-orange"></i>
+                        <div class="stat-info">
+                            <h3 id="stat-tugas-belum">0</h3>
+                            <p>Tugas Belum Selesai</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle text-green"></i>
+                        <div class="stat-info">
+                            <h3 id="stat-tugas-selesai">0</h3>
+                            <p>Tugas Selesai</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="btn-outline" onclick="bukaModal('modal-jadwal')"><i class="fas fa-plus"></i> Tambah Jadwal</button>
+                    <button class="btn-outline" onclick="bukaModal('modal-belajar')"><i class="fas fa-plus"></i> Tambah Belajar</button>
+                    <button class="btn-outline" onclick="bukaModal('modal-tugas')"><i class="fas fa-plus"></i> Tambah Tugas</button>
+                </div>
+            </section>
+
+            <section id="jadwal-pelajaran" class="page-section hidden">
+                <div class="section-header">
+                    <h2>Jadwal Pelajaran</h2>
+                    <button class="btn-primary" onclick="bukaModal('modal-jadwal')"><i class="fas fa-plus"></i> Tambah</button>
+                </div>
+                <div class="filter-bar">
+                    <select id="filter-hari-jadwal" onchange="renderJadwalPelajaran()">
+                        <option value="Semua">Semua Hari</option>
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                        <option value="Sabtu">Sabtu</option>
+                    </select>
+                </div>
+                <div class="data-grid" id="container-jadwal">
+                    </div>
+            </section>
+
+            <section id="jadwal-belajar" class="page-section hidden">
+                <div class="section-header">
+                    <h2>Jadwal Belajar Mandiri</h2>
+                    <button class="btn-primary" onclick="bukaModal('modal-belajar')"><i class="fas fa-plus"></i> Tambah</button>
+                </div>
+                <div class="data-grid" id="container-belajar">
+                    </div>
+            </section>
+
+            <section id="daftar-tugas" class="page-section hidden">
+                <div class="section-header">
+                    <h2>Daftar Tugas</h2>
+                    <button class="btn-primary" onclick="bukaModal('modal-tugas')"><i class="fas fa-plus"></i> Tambah</button>
+                </div>
+                <div class="filter-bar">
+                    <select id="filter-status-tugas" onchange="renderTugas()">
+                        <option value="Semua">Semua Status</option>
+                        <option value="Belum Selesai">Belum Selesai</option>
+                        <option value="Sedang Dikerjakan">Sedang Dikerjakan</option>
+                        <option value="Selesai">Selesai</option>
+                    </select>
+                </div>
+                <div class="data-list" id="container-tugas">
+                    </div>
+            </section>
+
+            <section id="pengingat" class="page-section hidden">
+                <div class="section-header">
+                    <h2>Pengingat (Reminders)</h2>
+                    <button class="btn-outline" onclick="mintaIzinNotifikasi()"><i class="fas fa-bell"></i> Aktifkan Notifikasi Browser</button>
+                </div>
+                <div class="card alert-info">
+                    <p>Daftar di bawah adalah ringkasan dari jadwal dan tugas yang mendekati waktu pelaksanaan.</p>
+                </div>
+                <div class="data-list" id="container-pengingat">
+                    </div>
+            </section>
+
+            <section id="peringkat" class="page-section hidden">
+                <div class="section-header">
+                    <h2>Peringkat Siswa</h2>
+                </div>
+                <div class="card alert-warning">
+                    <p><i class="fas fa-info-circle"></i> Ini adalah fitur simulasi (Dummy Data) karena aplikasi menggunakan LocalStorage tanpa database online.</p>
+                </div>
+                <div class="leaderboard" id="container-peringkat">
+                    </div>
+            </section>
+
+            <section id="profil" class="page-section hidden">
+                <div class="section-header">
+                    <h2>Profil Pengguna</h2>
+                </div>
+                <div class="profile-card card">
+                    <div class="profile-header">
+                        <div class="avatar"><i class="fas fa-user"></i></div>
+                        <div>
+                            <h3 id="display-nama">Nama Siswa</h3>
+                            <p id="display-kelas" class="text-muted">Kelas</p>
+                        </div>
+                    </div>
+                    <form id="form-profil" class="mt-20">
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" id="profil-nama" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Kelas</label>
+                            <input type="text" id="profil-kelas" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="profil-email" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Simpan Profil</button>
+                    </form>
+                    <hr class="mt-20">
+                    <h3 class="mt-20 text-danger">Pengaturan Berbahaya</h3>
+                    <div class="quick-actions mt-10">
+                        <button class="btn-danger" onclick="hapusSemuaData()"><i class="fas fa-trash"></i> Hapus Semua Data</button>
+                        <button class="btn-outline" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="modal-jadwal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="judul-modal-jadwal">Tambah Jadwal Pelajaran</h3>
+                <span class="close-modal" onclick="tutupModal('modal-jadwal')">&times;</span>
+            </div>
+            <form id="form-jadwal">
+                <input type="hidden" id="jadwal-id">
+                <div class="form-group">
+                    <label>Hari</label>
+                    <select id="jadwal-hari" required>
+                        <option value="Senin">Senin</option><option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option><option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mata Pelajaran</label>
+                    <input type="text" id="jadwal-mapel" required placeholder="Contoh: Matematika">
+                </div>
+                <div class="form-group">
+                    <label>Jam (Contoh: 07:00 - 08:30)</label>
+                    <input type="text" id="jadwal-jam" required placeholder="07:00 - 08:30">
+                </div>
+                <div class="form-group">
+                    <label>Nama Guru</label>
+                    <input type="text" id="jadwal-guru" required placeholder="Contoh: Pak Budi">
+                </div>
+                <div class="form-group">
+                    <label>Ruangan</label>
+                    <input type="text" id="jadwal-ruang" required placeholder="Contoh: Ruang 3">
+                </div>
+                <button type="submit" class="btn-primary w-100">Simpan Jadwal</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-belajar" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="judul-modal-belajar">Tambah Jadwal Belajar</h3>
+                <span class="close-modal" onclick="tutupModal('modal-belajar')">&times;</span>
+            </div>
+            <form id="form-belajar">
+                <input type="hidden" id="belajar-id">
+                <div class="form-group">
+                    <label>Hari</label>
+                    <select id="belajar-hari" required>
+                        <option value="Senin">Senin</option><option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option><option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option>
+                        <option value="Minggu">Minggu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Jam Mulai (Format 24 Jam)</label>
+                    <input type="time" id="belajar-jam" required>
+                </div>
+                <div class="form-group">
+                    <label>Materi / Topik Belajar</label>
+                    <input type="text" id="belajar-materi" required placeholder="Contoh: Persamaan Kuadrat">
+                </div>
+                <button type="submit" class="btn-primary w-100">Simpan Jadwal Belajar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-tugas" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="judul-modal-tugas">Tambah Tugas</h3>
+                <span class="close-modal" onclick="tutupModal('modal-tugas')">&times;</span>
+            </div>
+            <form id="form-tugas">
+                <input type="hidden" id="tugas-id">
+                <div class="form-group">
+                    <label>Mata Pelajaran</label>
+                    <input type="text" id="tugas-mapel" required placeholder="Contoh: Fisika">
+                </div>
+                <div class="form-group">
+                    <label>Judul Tugas / Deskripsi</label>
+                    <input type="text" id="tugas-judul" required placeholder="Latihan soal halaman 50">
+                </div>
+                <div class="form-group">
+                    <label>Deadline (Batas Waktu)</label>
+                    <input type="date" id="tugas-deadline" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="tugas-status" required>
+                        <option value="Belum Selesai">Belum Selesai</option>
+                        <option value="Sedang Dikerjakan">Sedang Dikerjakan</option>
+                        <option value="Selesai">Selesai</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary w-100">Simpan Tugas</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
